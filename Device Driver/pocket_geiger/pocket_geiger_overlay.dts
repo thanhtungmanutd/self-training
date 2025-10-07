@@ -1,0 +1,21 @@
+
+/dts-v1/;
+/plugin/;
+/ {
+	compatible = "brcm,bcm2835";
+
+    fragment@0 {
+		target-path = "/";
+		__overlay__ {
+			pocket_geiger {
+				compatible = "Radiation Watch,The Type 5 Pocket Geiger";
+				status = "okay";
+                ns-gpios = <&gpio 5 0>;
+                sig-gpios = <&gpio 6 0 >;
+                process-period = <160>;
+                history-length = <20>;
+                history-unit = <6>;
+			};
+		};
+	};
+};
