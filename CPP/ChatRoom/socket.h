@@ -5,13 +5,13 @@
 #include <iostream>
 #include <string>
 #include <cstdio>
-#include <sqlite3.h>
 #include <unistd.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/un.h>
 #include <sys/socket.h>
 #include <thread>
+#include "database.h"
 
 using namespace std;
 
@@ -32,29 +32,11 @@ class Socket {
     public:
         int sockfd;
         int port;
-        sockaddr_in server_addr;
+        sockaddr_in addr;
         Socket(int _port) : port(_port) {};
 };
 
-class Database {
-    private:
-        sqlite3 *database;
-    
-    public:
-        Database();
-        sqlite3* SQLite3() {return this->database;}
-        bool QuerryUserInfo(string&& name,
-                            string& pass,
-                            int& status,
-                            int& sockfd);
-        bool UpdateUserStatus(string&& name, int&& status, int&& sockfd);
-        bool AddNewUserToDatabase(string&& name,
-                                  string&& pass,
-                                  int&& status,
-                                  int& sockfd);
-};
-
-class Server : private Socket {
+class Server : public Socket {
     enum class State {recvClientReq, recvClientChatOpt, Online};
     private:
         Database database;
@@ -63,7 +45,7 @@ class Server : private Socket {
         void Listen();
 
     public:
-        Server(int _port) : Socket(_port) {};
+        Server(int port, string database_path) : Socket(port) , database(database_path.c_str()) {};
         void Init(const char *address);
         int Accept(sockaddr_in& client_addr, socklen_t& len);
         Response CheckUserInfo(int& sockfd, request_message_t& msg);
@@ -71,7 +53,7 @@ class Server : private Socket {
         void HandleConnection(int new_sockfd, sockaddr_in client_addr);
 };
 
-class Client : private Socket {
+class Client : public Socket {
     enum class State {sendReq, SelectChatOpt, Online};
     private:
         thread sendThread;

@@ -1,0 +1,30 @@
+#!/usr/bin/expect -f
+
+set timeout 1
+set port [lindex $argv 0]
+spawn ./Client $port
+
+expect "Enter your Option:"
+send "1\r"
+
+expect "Enter username:"
+send "tung\r"
+
+expect "Enter password:"
+send "bach\r"
+
+expect "Select what you would like to proceed with:"
+send "2\r"
+
+# Foreground periodic sending loop
+while {1} {
+    expect {
+        -re {.*> $} {   ;# Wait until prompt or new line appears
+            send "alo anyone there?\r"
+        }
+        timeout { 
+            send "alo anyone there?\r"
+        }
+    }
+    sleep 2
+}

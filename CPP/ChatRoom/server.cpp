@@ -1,7 +1,9 @@
 #include <thread>
-#include "tcp_socket.h"
+#include "socket.h"
 #include <vector>
 #include <errno.h>
+
+#define DATABASE_PATH           "database.db"
 
 std::vector<std::thread> threadPool;
 
@@ -11,7 +13,7 @@ int main(int argc, char* args[]) {
         return 1;
     }
 
-    Server server(atoi(args[1]));
+    Server server(atoi(args[1]), DATABASE_PATH);
     server.Init("127.0.0.1");
 
     while (1) {

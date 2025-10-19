@@ -1,85 +1,19 @@
-#include "tcp_socket.h"
+#include "socket.h"
 
-#define DATABASE_PATH           "../database.db"
 #define LOG_ERROR(msg)          cout << msg << "\r"; \
                                 exit(EXIT_FAILURE)
 
 using namespace std;
 
-/*----------------------------------------------------------------------------*/
-/*                               DATABASE                                     */
-/*----------------------------------------------------------------------------*/
-Database::Database() {
-    if (sqlite3_open(DATABASE_PATH, &database) != SQLITE_OK) 
-        cout << "Chat Server: Failed to connect to databse\r\n"; 
-}
-
-bool Database::QuerryUserInfo(string&& name,
-                              string& pass,
-                              int& status,
-                              int& sockfd) {
-    string cmd = "SELECT * FROM usrs WHERE username = '" + name + "';";
-    sqlite3_stmt *stmt;
-
-    if (sqlite3_prepare_v2(database, cmd.c_str(), -1, &stmt, 0) != SQLITE_OK) {
-        cout << "Chat Server: Failed to prepare statement to querry data\r\n";
-        return false;
-    }
-
-    if (sqlite3_step(stmt) == SQLITE_ROW) {
-        pass = string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1))); 
-        status = sqlite3_column_int(stmt, 2);
-        sockfd = sqlite3_column_int(stmt, 3);
-        sqlite3_finalize(stmt);
-        return true;
-    }
-    sqlite3_finalize(stmt);
-    return false;
-}
-
-bool Database::UpdateUserStatus(string&& name, int&& status, int&& sockfd) {
-    string cmd = "UPDATE usrs SET status = ?, sockfd = ? WHERE username = ?;";
-    sqlite3_stmt *stmt;
-
-    if (sqlite3_prepare_v2(database, cmd.c_str(), -1, &stmt, 0)) {
-        cout << "Chat Server: Failed to prepare statement to update data\r\n";
-        return false;
-    }
-
-    sqlite3_bind_int(stmt, 1, status);
-    sqlite3_bind_int(stmt, 2, sockfd);
-    sqlite3_bind_text(stmt, 3, name.c_str(), -1, SQLITE_STATIC);
-
-    if (sqlite3_step(stmt) == SQLITE_DONE) {
-        sqlite3_finalize(stmt);
-        return true;
-    }
-    sqlite3_finalize(stmt);
-    return false;
-}
-
-bool Database::AddNewUserToDatabase(string&& name,
-                                    string&& pass,
-                                    int&& status,
-                                    int& sockfd) {
-    char cmd[1000] = {0};
-
-    sprintf(cmd, "INSERT INTO usrs (username, password, status, sockfd) VALUES ('%s', '%s', %d, %d);",
-            name.c_str(), pass.c_str(), status, sockfd);
-    if (sqlite3_exec(database, cmd, 0, 0, NULL) == SQLITE_OK) {
-        return true;
-    }
-    return false;
-}
 
 /*----------------------------------------------------------------------------*/
 /*                               SERVER                                       */
 /*----------------------------------------------------------------------------*/
 void Server::Binding() {
-    server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(port);
+    this->addr.sin_family = AF_INET;
+    this->addr.sin_port = htons(port);
 
-    if (bind(sockfd, (sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+    if (bind(sockfd, (sockaddr *)&this->addr, sizeof(this->addr)) < 0) {
         LOG_ERROR("Server: failed to bind socket\r\n");
     }
     cout << "Server: bind server socket done\r\n";
@@ -99,14 +33,19 @@ void Server::Init(const char *address) {
     }
     cout << "Server: create socket done\r\n";
 
-    server_addr.sin_addr.s_addr = inet_addr(address);
+    int opt = 1;
+    if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt)) < 0) {
+        perror("setsockopt failed");
+        close(sockfd);
+        exit(EXIT_FAILURE);
+    }
+
+    this->addr.sin_addr.s_addr = inet_addr(address);
     Binding();
     Listen();
 
     cout << "Chat Server: Server Port Information: "
-         << inet_ntoa(server_addr.sin_addr) << ":" << port << "\r\n";
-
-    database = Database();
+         << inet_ntoa(this->addr.sin_addr) << ":" << port << "\r\n";
 }
 
 int Server::Accept(sockaddr_in& client_addr, socklen_t& len) {
@@ -270,15 +209,15 @@ Client::~Client() {
     cout << "\nClient Terminated\r\n";
 }
 
-bool Client::Connect(const char *addr) {
+bool Client::Connect(const char *_addr) {
     int timeout = 5;
 
-    server_addr.sin_family = AF_INET;
-    server_addr.sin_addr.s_addr = inet_addr(addr);
-    server_addr.sin_port = htons(port);
+    this->addr.sin_family = AF_INET;
+    this->addr.sin_addr.s_addr = inet_addr(_addr);
+    this->addr.sin_port = htons(port);
 
     while (timeout-- > 0) {
-        int ret = connect(sockfd, (sockaddr *)&server_addr, sizeof(server_addr));
+        int ret = connect(sockfd, (sockaddr *)&addr, sizeof(addr));
         if (ret == 0) {
             return 1;
         }
@@ -313,7 +252,7 @@ void Client::HandleConnection() {
 
                 cout << "INFO: Connected to the Server\r\n\n";
                 cout << "1. Login\r\n2. Register\r\n3. Exit\r\n\n";
-                cout << "Enter your Option: ";
+                cout << "Enter your Option: " << std::flush;;
                 cin >> option;
 
                 if (option == 3) 
