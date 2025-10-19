@@ -8,9 +8,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/database.cpp" "CMakeFiles/Server.dir/database.cpp.o" "gcc" "CMakeFiles/Server.dir/database.cpp.o.d"
-  "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/server.cpp" "CMakeFiles/Server.dir/server.cpp.o" "gcc" "CMakeFiles/Server.dir/server.cpp.o.d"
-  "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/socket.cpp" "CMakeFiles/Server.dir/socket.cpp.o" "gcc" "CMakeFiles/Server.dir/socket.cpp.o.d"
+  "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/lib/src/database.cpp" "CMakeFiles/Server.dir/lib/src/database.cpp.o" "gcc" "CMakeFiles/Server.dir/lib/src/database.cpp.o.d"
+  "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/lib/src/socket.cpp" "CMakeFiles/Server.dir/lib/src/socket.cpp.o" "gcc" "CMakeFiles/Server.dir/lib/src/socket.cpp.o.d"
+  "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/src/server.cpp" "CMakeFiles/Server.dir/src/server.cpp.o" "gcc" "CMakeFiles/Server.dir/src/server.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

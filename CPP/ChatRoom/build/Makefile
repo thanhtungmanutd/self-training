@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room"
+CMAKE_SOURCE_DIR = /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/build"
+CMAKE_BINARY_DIR = /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -85,11 +85,56 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 .PHONY : rebuild_cache/fast
 
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Available install components are: \"Unspecified\" \"headers\" \"libraries\""
+.PHONY : list_install_components
+
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
+.PHONY : list_install_components/fast
+
+# Special rule for the target install
+install: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install
+
+# Special rule for the target install
+install/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install/fast
+
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
+
+# Special rule for the target install/local
+install/local/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local/fast
+
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip/fast
+
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/build/CMakeFiles" "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/build//CMakeFiles/progress.marks"
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/build/CMakeFiles" 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -117,19 +162,6 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named Client
-
-# Build rule for target.
-Client: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Client
-.PHONY : Client
-
-# fast build rule for target.
-Client/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/build
-.PHONY : Client/fast
-
-#=============================================================================
 # Target rules for targets named Server
 
 # Build rule for target.
@@ -142,104 +174,103 @@ Server/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/build
 .PHONY : Server/fast
 
-client.o: client.cpp.o
-.PHONY : client.o
+#=============================================================================
+# Target rules for targets named SQLiteCpp
+
+# Build rule for target.
+SQLiteCpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 SQLiteCpp
+.PHONY : SQLiteCpp
+
+# fast build rule for target.
+SQLiteCpp/fast:
+	$(MAKE) $(MAKESILENT) -f SQLiteCpp/CMakeFiles/SQLiteCpp.dir/build.make SQLiteCpp/CMakeFiles/SQLiteCpp.dir/build
+.PHONY : SQLiteCpp/fast
+
+#=============================================================================
+# Target rules for targets named sqlite3
+
+# Build rule for target.
+sqlite3: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 sqlite3
+.PHONY : sqlite3
+
+# fast build rule for target.
+sqlite3/fast:
+	$(MAKE) $(MAKESILENT) -f SQLiteCpp/sqlite3/CMakeFiles/sqlite3.dir/build.make SQLiteCpp/sqlite3/CMakeFiles/sqlite3.dir/build
+.PHONY : sqlite3/fast
+
+lib/src/database.o: lib/src/database.cpp.o
+.PHONY : lib/src/database.o
 
 # target to build an object file
-client.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/client.cpp.o
-.PHONY : client.cpp.o
+lib/src/database.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/lib/src/database.cpp.o
+.PHONY : lib/src/database.cpp.o
 
-client.i: client.cpp.i
-.PHONY : client.i
+lib/src/database.i: lib/src/database.cpp.i
+.PHONY : lib/src/database.i
 
 # target to preprocess a source file
-client.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/client.cpp.i
-.PHONY : client.cpp.i
+lib/src/database.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/lib/src/database.cpp.i
+.PHONY : lib/src/database.cpp.i
 
-client.s: client.cpp.s
-.PHONY : client.s
+lib/src/database.s: lib/src/database.cpp.s
+.PHONY : lib/src/database.s
 
 # target to generate assembly for a file
-client.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/client.cpp.s
-.PHONY : client.cpp.s
+lib/src/database.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/lib/src/database.cpp.s
+.PHONY : lib/src/database.cpp.s
 
-database.o: database.cpp.o
-.PHONY : database.o
+lib/src/socket.o: lib/src/socket.cpp.o
+.PHONY : lib/src/socket.o
 
 # target to build an object file
-database.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/database.cpp.o
-.PHONY : database.cpp.o
+lib/src/socket.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/lib/src/socket.cpp.o
+.PHONY : lib/src/socket.cpp.o
 
-database.i: database.cpp.i
-.PHONY : database.i
+lib/src/socket.i: lib/src/socket.cpp.i
+.PHONY : lib/src/socket.i
 
 # target to preprocess a source file
-database.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/database.cpp.i
-.PHONY : database.cpp.i
+lib/src/socket.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/lib/src/socket.cpp.i
+.PHONY : lib/src/socket.cpp.i
 
-database.s: database.cpp.s
-.PHONY : database.s
+lib/src/socket.s: lib/src/socket.cpp.s
+.PHONY : lib/src/socket.s
 
 # target to generate assembly for a file
-database.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/database.cpp.s
-.PHONY : database.cpp.s
+lib/src/socket.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/lib/src/socket.cpp.s
+.PHONY : lib/src/socket.cpp.s
 
-server.o: server.cpp.o
-.PHONY : server.o
+src/server.o: src/server.cpp.o
+.PHONY : src/server.o
 
 # target to build an object file
-server.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/server.cpp.o
-.PHONY : server.cpp.o
+src/server.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/src/server.cpp.o
+.PHONY : src/server.cpp.o
 
-server.i: server.cpp.i
-.PHONY : server.i
-
-# target to preprocess a source file
-server.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/server.cpp.i
-.PHONY : server.cpp.i
-
-server.s: server.cpp.s
-.PHONY : server.s
-
-# target to generate assembly for a file
-server.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/server.cpp.s
-.PHONY : server.cpp.s
-
-socket.o: socket.cpp.o
-.PHONY : socket.o
-
-# target to build an object file
-socket.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/socket.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/socket.cpp.o
-.PHONY : socket.cpp.o
-
-socket.i: socket.cpp.i
-.PHONY : socket.i
+src/server.i: src/server.cpp.i
+.PHONY : src/server.i
 
 # target to preprocess a source file
-socket.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/socket.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/socket.cpp.i
-.PHONY : socket.cpp.i
+src/server.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/src/server.cpp.i
+.PHONY : src/server.cpp.i
 
-socket.s: socket.cpp.s
-.PHONY : socket.s
+src/server.s: src/server.cpp.s
+.PHONY : src/server.s
 
 # target to generate assembly for a file
-socket.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/socket.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/socket.cpp.s
-.PHONY : socket.cpp.s
+src/server.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/src/server.cpp.s
+.PHONY : src/server.cpp.s
 
 # Help Target
 help:
@@ -248,21 +279,23 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... edit_cache"
+	@echo "... install"
+	@echo "... install/local"
+	@echo "... install/strip"
+	@echo "... list_install_components"
 	@echo "... rebuild_cache"
-	@echo "... Client"
+	@echo "... SQLiteCpp"
 	@echo "... Server"
-	@echo "... client.o"
-	@echo "... client.i"
-	@echo "... client.s"
-	@echo "... database.o"
-	@echo "... database.i"
-	@echo "... database.s"
-	@echo "... server.o"
-	@echo "... server.i"
-	@echo "... server.s"
-	@echo "... socket.o"
-	@echo "... socket.i"
-	@echo "... socket.s"
+	@echo "... sqlite3"
+	@echo "... lib/src/database.o"
+	@echo "... lib/src/database.i"
+	@echo "... lib/src/database.s"
+	@echo "... lib/src/socket.o"
+	@echo "... lib/src/socket.i"
+	@echo "... lib/src/socket.s"
+	@echo "... src/server.o"
+	@echo "... src/server.i"
+	@echo "... src/server.s"
 .PHONY : help
 
 

@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room"
+CMAKE_SOURCE_DIR = /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/build"
+CMAKE_BINARY_DIR = /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/Server.dir/depend.make
@@ -69,64 +69,65 @@ include CMakeFiles/Server.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/Server.dir/flags.make
 
-CMakeFiles/Server.dir/server.cpp.o: CMakeFiles/Server.dir/flags.make
-CMakeFiles/Server.dir/server.cpp.o: /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat\ Room/server.cpp
-CMakeFiles/Server.dir/server.cpp.o: CMakeFiles/Server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Server.dir/server.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Server.dir/server.cpp.o -MF CMakeFiles/Server.dir/server.cpp.o.d -o CMakeFiles/Server.dir/server.cpp.o -c "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/server.cpp"
+CMakeFiles/Server.dir/lib/src/database.cpp.o: CMakeFiles/Server.dir/flags.make
+CMakeFiles/Server.dir/lib/src/database.cpp.o: /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/lib/src/database.cpp
+CMakeFiles/Server.dir/lib/src/database.cpp.o: CMakeFiles/Server.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Server.dir/lib/src/database.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Server.dir/lib/src/database.cpp.o -MF CMakeFiles/Server.dir/lib/src/database.cpp.o.d -o CMakeFiles/Server.dir/lib/src/database.cpp.o -c /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/lib/src/database.cpp
 
-CMakeFiles/Server.dir/server.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Server.dir/server.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/server.cpp" > CMakeFiles/Server.dir/server.cpp.i
+CMakeFiles/Server.dir/lib/src/database.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Server.dir/lib/src/database.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/lib/src/database.cpp > CMakeFiles/Server.dir/lib/src/database.cpp.i
 
-CMakeFiles/Server.dir/server.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Server.dir/server.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/server.cpp" -o CMakeFiles/Server.dir/server.cpp.s
+CMakeFiles/Server.dir/lib/src/database.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Server.dir/lib/src/database.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/lib/src/database.cpp -o CMakeFiles/Server.dir/lib/src/database.cpp.s
 
-CMakeFiles/Server.dir/socket.cpp.o: CMakeFiles/Server.dir/flags.make
-CMakeFiles/Server.dir/socket.cpp.o: /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat\ Room/socket.cpp
-CMakeFiles/Server.dir/socket.cpp.o: CMakeFiles/Server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Server.dir/socket.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Server.dir/socket.cpp.o -MF CMakeFiles/Server.dir/socket.cpp.o.d -o CMakeFiles/Server.dir/socket.cpp.o -c "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/socket.cpp"
+CMakeFiles/Server.dir/lib/src/socket.cpp.o: CMakeFiles/Server.dir/flags.make
+CMakeFiles/Server.dir/lib/src/socket.cpp.o: /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/lib/src/socket.cpp
+CMakeFiles/Server.dir/lib/src/socket.cpp.o: CMakeFiles/Server.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Server.dir/lib/src/socket.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Server.dir/lib/src/socket.cpp.o -MF CMakeFiles/Server.dir/lib/src/socket.cpp.o.d -o CMakeFiles/Server.dir/lib/src/socket.cpp.o -c /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/lib/src/socket.cpp
 
-CMakeFiles/Server.dir/socket.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Server.dir/socket.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/socket.cpp" > CMakeFiles/Server.dir/socket.cpp.i
+CMakeFiles/Server.dir/lib/src/socket.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Server.dir/lib/src/socket.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/lib/src/socket.cpp > CMakeFiles/Server.dir/lib/src/socket.cpp.i
 
-CMakeFiles/Server.dir/socket.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Server.dir/socket.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/socket.cpp" -o CMakeFiles/Server.dir/socket.cpp.s
+CMakeFiles/Server.dir/lib/src/socket.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Server.dir/lib/src/socket.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/lib/src/socket.cpp -o CMakeFiles/Server.dir/lib/src/socket.cpp.s
 
-CMakeFiles/Server.dir/database.cpp.o: CMakeFiles/Server.dir/flags.make
-CMakeFiles/Server.dir/database.cpp.o: /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat\ Room/database.cpp
-CMakeFiles/Server.dir/database.cpp.o: CMakeFiles/Server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Server.dir/database.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Server.dir/database.cpp.o -MF CMakeFiles/Server.dir/database.cpp.o.d -o CMakeFiles/Server.dir/database.cpp.o -c "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/database.cpp"
+CMakeFiles/Server.dir/src/server.cpp.o: CMakeFiles/Server.dir/flags.make
+CMakeFiles/Server.dir/src/server.cpp.o: /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/src/server.cpp
+CMakeFiles/Server.dir/src/server.cpp.o: CMakeFiles/Server.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Server.dir/src/server.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Server.dir/src/server.cpp.o -MF CMakeFiles/Server.dir/src/server.cpp.o.d -o CMakeFiles/Server.dir/src/server.cpp.o -c /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/src/server.cpp
 
-CMakeFiles/Server.dir/database.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Server.dir/database.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/database.cpp" > CMakeFiles/Server.dir/database.cpp.i
+CMakeFiles/Server.dir/src/server.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Server.dir/src/server.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/src/server.cpp > CMakeFiles/Server.dir/src/server.cpp.i
 
-CMakeFiles/Server.dir/database.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Server.dir/database.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/database.cpp" -o CMakeFiles/Server.dir/database.cpp.s
+CMakeFiles/Server.dir/src/server.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Server.dir/src/server.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/src/server.cpp -o CMakeFiles/Server.dir/src/server.cpp.s
 
 # Object files for target Server
 Server_OBJECTS = \
-"CMakeFiles/Server.dir/server.cpp.o" \
-"CMakeFiles/Server.dir/socket.cpp.o" \
-"CMakeFiles/Server.dir/database.cpp.o"
+"CMakeFiles/Server.dir/lib/src/database.cpp.o" \
+"CMakeFiles/Server.dir/lib/src/socket.cpp.o" \
+"CMakeFiles/Server.dir/src/server.cpp.o"
 
 # External object files for target Server
 Server_EXTERNAL_OBJECTS =
 
-Server: CMakeFiles/Server.dir/server.cpp.o
-Server: CMakeFiles/Server.dir/socket.cpp.o
-Server: CMakeFiles/Server.dir/database.cpp.o
+Server: CMakeFiles/Server.dir/lib/src/database.cpp.o
+Server: CMakeFiles/Server.dir/lib/src/socket.cpp.o
+Server: CMakeFiles/Server.dir/src/server.cpp.o
 Server: CMakeFiles/Server.dir/build.make
-Server: /usr/lib/x86_64-linux-gnu/libsqlite3.so
+Server: SQLiteCpp/libSQLiteCpp.a
+Server: SQLiteCpp/sqlite3/libsqlite3.a
 Server: CMakeFiles/Server.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable Server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable Server"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Server.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -138,6 +139,6 @@ CMakeFiles/Server.dir/clean:
 .PHONY : CMakeFiles/Server.dir/clean
 
 CMakeFiles/Server.dir/depend:
-	cd "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/build" && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room" "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room" "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/build" "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/build" "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/build/CMakeFiles/Server.dir/DependInfo.cmake" "--color=$(COLOR)"
+	cd /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles/Server.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/Server.dir/depend
 

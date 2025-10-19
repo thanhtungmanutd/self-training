@@ -8,8 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/client.cpp" "CMakeFiles/Client.dir/client.cpp.o" "gcc" "CMakeFiles/Client.dir/client.cpp.o.d"
-  "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/socket.cpp" "CMakeFiles/Client.dir/socket.cpp.o" "gcc" "CMakeFiles/Client.dir/socket.cpp.o.d"
+  "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/lib/src/socket.cpp" "CMakeFiles/Client.dir/lib/src/socket.cpp.o" "gcc" "CMakeFiles/Client.dir/lib/src/socket.cpp.o.d"
+  "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/src/client.cpp" "CMakeFiles/Client.dir/src/client.cpp.o" "gcc" "CMakeFiles/Client.dir/src/client.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

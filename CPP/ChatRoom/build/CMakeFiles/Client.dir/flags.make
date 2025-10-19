@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = 
+CXX_INCLUDES = -I/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/lib/inc -I/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/src -I/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/SQLiteCpp/include
 
 CXX_FLAGS = 
 

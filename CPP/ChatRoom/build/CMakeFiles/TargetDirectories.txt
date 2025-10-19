@@ -1,4 +1,21 @@
-/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/build/CMakeFiles/Client.dir
-/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/build/CMakeFiles/Server.dir
-/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/build/CMakeFiles/edit_cache.dir
-/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/Chat Room/build/CMakeFiles/rebuild_cache.dir
+/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles/Server.dir
+/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles/edit_cache.dir
+/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles/rebuild_cache.dir
+/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles/list_install_components.dir
+/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles/install.dir
+/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles/install/local.dir
+/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles/install/strip.dir
+/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/SQLiteCpp/CMakeFiles/SQLiteCpp.dir
+/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/SQLiteCpp/CMakeFiles/edit_cache.dir
+/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/SQLiteCpp/CMakeFiles/rebuild_cache.dir
+/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/SQLiteCpp/CMakeFiles/list_install_components.dir
+/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/SQLiteCpp/CMakeFiles/install.dir
+/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/SQLiteCpp/CMakeFiles/install/local.dir
+/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/SQLiteCpp/CMakeFiles/install/strip.dir
+/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/SQLiteCpp/sqlite3/CMakeFiles/sqlite3.dir
+/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/SQLiteCpp/sqlite3/CMakeFiles/edit_cache.dir
+/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/SQLiteCpp/sqlite3/CMakeFiles/rebuild_cache.dir
+/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/SQLiteCpp/sqlite3/CMakeFiles/list_install_components.dir
+/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/SQLiteCpp/sqlite3/CMakeFiles/install.dir
+/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/SQLiteCpp/sqlite3/CMakeFiles/install/local.dir
+/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/SQLiteCpp/sqlite3/CMakeFiles/install/strip.dir
