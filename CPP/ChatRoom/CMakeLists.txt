@@ -1,8 +1,22 @@
 cmake_minimum_required(VERSION 3.28)
 project(ChatRoom)
-find_package(SQLite3 REQUIRED)
-add_executable(Client client.cpp socket.cpp)
-target_link_libraries(Client PRIVATE SQLite::SQLite3)
-add_executable(Server server.cpp socket.cpp database.cpp)
-target_link_libraries(Server PRIVATE SQLite::SQLite3)
+
+set(CMAKE_CXX_STANDARD 17)
+
+add_subdirectory(SQLiteCpp)
+
+include_directories(
+    ${CMAKE_SOURCE_DIR}/lib/inc
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/SQLiteCpp/include
+)
+
+file(GLOB SERVER_SOURCES "lib/src/*.cpp" src/server.cpp)
+file(GLOB CLIENT_SOURCES lib/src/socket.cpp src/client.cpp)
+
+# add_executable(Client ${CLIENT_SOURCES})
+# target_link_libraries(Client)
+
+add_executable(Server ${SERVER_SOURCES})
+target_link_libraries(Server SQLiteCpp sqlite3)
 
