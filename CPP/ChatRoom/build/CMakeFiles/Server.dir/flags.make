@@ -6,5 +6,5 @@ CXX_DEFINES = -DSQLITE_ENABLE_COLUMN_METADATA
 
 CXX_INCLUDES = -I/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/lib/inc -I/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/src -I/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/SQLiteCpp/include -I/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/SQLiteCpp/sqlite3
 
-CXX_FLAGS = 
+CXX_FLAGS = -std=gnu++20
 

@@ -6,5 +6,5 @@ CXX_DEFINES = -DSQLITE_ENABLE_COLUMN_METADATA
 
 CXX_INCLUDES = -I/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/SQLiteCpp/include -I/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/SQLiteCpp/sqlite3
 
-CXX_FLAGS =  -Wall -Wextra -Wpedantic -Wswitch-enum -Wshadow -Wno-long-long -std=gnu++17 -fPIC -fstack-protector
+CXX_FLAGS =  -Wall -Wextra -Wpedantic -Wswitch-enum -Wshadow -Wno-long-long -std=gnu++20 -fPIC -fstack-protector
 

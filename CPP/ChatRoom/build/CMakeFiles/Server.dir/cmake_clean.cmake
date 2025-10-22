@@ -1,8 +1,10 @@
 file(REMOVE_RECURSE
   "CMakeFiles/Server.dir/lib/src/database.cpp.o"
   "CMakeFiles/Server.dir/lib/src/database.cpp.o.d"
-  "CMakeFiles/Server.dir/lib/src/socket.cpp.o"
-  "CMakeFiles/Server.dir/lib/src/socket.cpp.o.d"
+  "CMakeFiles/Server.dir/lib/src/socket_client.cpp.o"
+  "CMakeFiles/Server.dir/lib/src/socket_client.cpp.o.d"
+  "CMakeFiles/Server.dir/lib/src/socket_server.cpp.o"
+  "CMakeFiles/Server.dir/lib/src/socket_server.cpp.o.d"
   "CMakeFiles/Server.dir/src/server.cpp.o"
   "CMakeFiles/Server.dir/src/server.cpp.o.d"
   "Server"

@@ -63,6 +63,7 @@ CMAKE_BINARY_DIR = /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
+all: CMakeFiles/Client.dir/all
 all: CMakeFiles/Server.dir/all
 all: SQLiteCpp/all
 .PHONY : all
@@ -72,6 +73,7 @@ preinstall: SQLiteCpp/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
+clean: CMakeFiles/Client.dir/clean
 clean: CMakeFiles/Server.dir/clean
 clean: SQLiteCpp/clean
 .PHONY : clean
@@ -109,6 +111,33 @@ SQLiteCpp/sqlite3/clean: SQLiteCpp/sqlite3/CMakeFiles/sqlite3.dir/clean
 .PHONY : SQLiteCpp/sqlite3/clean
 
 #=============================================================================
+# Target rules for target CMakeFiles/Client.dir
+
+# All Build rule for target.
+CMakeFiles/Client.dir/all: SQLiteCpp/CMakeFiles/SQLiteCpp.dir/all
+CMakeFiles/Client.dir/all: SQLiteCpp/sqlite3/CMakeFiles/sqlite3.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target Client"
+.PHONY : CMakeFiles/Client.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/Client.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles 15
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Client.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles 0
+.PHONY : CMakeFiles/Client.dir/rule
+
+# Convenience name for target.
+Client: CMakeFiles/Client.dir/rule
+.PHONY : Client
+
+# clean rule for target.
+CMakeFiles/Client.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/clean
+.PHONY : CMakeFiles/Client.dir/clean
+
+#=============================================================================
 # Target rules for target CMakeFiles/Server.dir
 
 # All Build rule for target.
@@ -116,12 +145,12 @@ CMakeFiles/Server.dir/all: SQLiteCpp/CMakeFiles/SQLiteCpp.dir/all
 CMakeFiles/Server.dir/all: SQLiteCpp/sqlite3/CMakeFiles/sqlite3.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles --progress-num=9,10,11,12 "Built target Server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles --progress-num=14,15,16,17,18 "Built target Server"
 .PHONY : CMakeFiles/Server.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/Server.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles 14
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles 15
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Server.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles 0
 .PHONY : CMakeFiles/Server.dir/rule
@@ -142,7 +171,7 @@ CMakeFiles/Server.dir/clean:
 SQLiteCpp/CMakeFiles/SQLiteCpp.dir/all: SQLiteCpp/sqlite3/CMakeFiles/sqlite3.dir/all
 	$(MAKE) $(MAKESILENT) -f SQLiteCpp/CMakeFiles/SQLiteCpp.dir/build.make SQLiteCpp/CMakeFiles/SQLiteCpp.dir/depend
 	$(MAKE) $(MAKESILENT) -f SQLiteCpp/CMakeFiles/SQLiteCpp.dir/build.make SQLiteCpp/CMakeFiles/SQLiteCpp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8 "Built target SQLiteCpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles --progress-num=6,7,8,9,10,11,12,13 "Built target SQLiteCpp"
 .PHONY : SQLiteCpp/CMakeFiles/SQLiteCpp.dir/all
 
 # Build rule for subdir invocation for target.
@@ -168,7 +197,7 @@ SQLiteCpp/CMakeFiles/SQLiteCpp.dir/clean:
 SQLiteCpp/sqlite3/CMakeFiles/sqlite3.dir/all:
 	$(MAKE) $(MAKESILENT) -f SQLiteCpp/sqlite3/CMakeFiles/sqlite3.dir/build.make SQLiteCpp/sqlite3/CMakeFiles/sqlite3.dir/depend
 	$(MAKE) $(MAKESILENT) -f SQLiteCpp/sqlite3/CMakeFiles/sqlite3.dir/build.make SQLiteCpp/sqlite3/CMakeFiles/sqlite3.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles --progress-num=13,14 "Built target sqlite3"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles --progress-num=19,20 "Built target sqlite3"
 .PHONY : SQLiteCpp/sqlite3/CMakeFiles/sqlite3.dir/all
 
 # Build rule for subdir invocation for target.

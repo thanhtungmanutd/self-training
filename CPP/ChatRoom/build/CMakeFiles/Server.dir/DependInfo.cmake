@@ -9,7 +9,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/lib/src/database.cpp" "CMakeFiles/Server.dir/lib/src/database.cpp.o" "gcc" "CMakeFiles/Server.dir/lib/src/database.cpp.o.d"
-  "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/lib/src/socket.cpp" "CMakeFiles/Server.dir/lib/src/socket.cpp.o" "gcc" "CMakeFiles/Server.dir/lib/src/socket.cpp.o.d"
+  "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/lib/src/socket_client.cpp" "CMakeFiles/Server.dir/lib/src/socket_client.cpp.o" "gcc" "CMakeFiles/Server.dir/lib/src/socket_client.cpp.o.d"
+  "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/lib/src/socket_server.cpp" "CMakeFiles/Server.dir/lib/src/socket_server.cpp.o" "gcc" "CMakeFiles/Server.dir/lib/src/socket_server.cpp.o.d"
   "/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/src/server.cpp" "CMakeFiles/Server.dir/src/server.cpp.o" "gcc" "CMakeFiles/Server.dir/src/server.cpp.o.d"
   )
 

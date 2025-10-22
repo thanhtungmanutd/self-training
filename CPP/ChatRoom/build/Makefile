@@ -162,6 +162,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named Client
+
+# Build rule for target.
+Client: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Client
+.PHONY : Client
+
+# fast build rule for target.
+Client/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/build
+.PHONY : Client/fast
+
+#=============================================================================
 # Target rules for targets named Server
 
 # Build rule for target.
@@ -205,6 +218,7 @@ lib/src/database.o: lib/src/database.cpp.o
 
 # target to build an object file
 lib/src/database.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/lib/src/database.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/lib/src/database.cpp.o
 .PHONY : lib/src/database.cpp.o
 
@@ -213,6 +227,7 @@ lib/src/database.i: lib/src/database.cpp.i
 
 # target to preprocess a source file
 lib/src/database.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/lib/src/database.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/lib/src/database.cpp.i
 .PHONY : lib/src/database.cpp.i
 
@@ -221,32 +236,87 @@ lib/src/database.s: lib/src/database.cpp.s
 
 # target to generate assembly for a file
 lib/src/database.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/lib/src/database.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/lib/src/database.cpp.s
 .PHONY : lib/src/database.cpp.s
 
-lib/src/socket.o: lib/src/socket.cpp.o
-.PHONY : lib/src/socket.o
+lib/src/socket_client.o: lib/src/socket_client.cpp.o
+.PHONY : lib/src/socket_client.o
 
 # target to build an object file
-lib/src/socket.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/lib/src/socket.cpp.o
-.PHONY : lib/src/socket.cpp.o
+lib/src/socket_client.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/lib/src/socket_client.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/lib/src/socket_client.cpp.o
+.PHONY : lib/src/socket_client.cpp.o
 
-lib/src/socket.i: lib/src/socket.cpp.i
-.PHONY : lib/src/socket.i
+lib/src/socket_client.i: lib/src/socket_client.cpp.i
+.PHONY : lib/src/socket_client.i
 
 # target to preprocess a source file
-lib/src/socket.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/lib/src/socket.cpp.i
-.PHONY : lib/src/socket.cpp.i
+lib/src/socket_client.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/lib/src/socket_client.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/lib/src/socket_client.cpp.i
+.PHONY : lib/src/socket_client.cpp.i
 
-lib/src/socket.s: lib/src/socket.cpp.s
-.PHONY : lib/src/socket.s
+lib/src/socket_client.s: lib/src/socket_client.cpp.s
+.PHONY : lib/src/socket_client.s
 
 # target to generate assembly for a file
-lib/src/socket.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/lib/src/socket.cpp.s
-.PHONY : lib/src/socket.cpp.s
+lib/src/socket_client.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/lib/src/socket_client.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/lib/src/socket_client.cpp.s
+.PHONY : lib/src/socket_client.cpp.s
+
+lib/src/socket_server.o: lib/src/socket_server.cpp.o
+.PHONY : lib/src/socket_server.o
+
+# target to build an object file
+lib/src/socket_server.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/lib/src/socket_server.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/lib/src/socket_server.cpp.o
+.PHONY : lib/src/socket_server.cpp.o
+
+lib/src/socket_server.i: lib/src/socket_server.cpp.i
+.PHONY : lib/src/socket_server.i
+
+# target to preprocess a source file
+lib/src/socket_server.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/lib/src/socket_server.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/lib/src/socket_server.cpp.i
+.PHONY : lib/src/socket_server.cpp.i
+
+lib/src/socket_server.s: lib/src/socket_server.cpp.s
+.PHONY : lib/src/socket_server.s
+
+# target to generate assembly for a file
+lib/src/socket_server.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/lib/src/socket_server.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/lib/src/socket_server.cpp.s
+.PHONY : lib/src/socket_server.cpp.s
+
+src/client.o: src/client.cpp.o
+.PHONY : src/client.o
+
+# target to build an object file
+src/client.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/src/client.cpp.o
+.PHONY : src/client.cpp.o
+
+src/client.i: src/client.cpp.i
+.PHONY : src/client.i
+
+# target to preprocess a source file
+src/client.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/src/client.cpp.i
+.PHONY : src/client.cpp.i
+
+src/client.s: src/client.cpp.s
+.PHONY : src/client.s
+
+# target to generate assembly for a file
+src/client.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/src/client.cpp.s
+.PHONY : src/client.cpp.s
 
 src/server.o: src/server.cpp.o
 .PHONY : src/server.o
@@ -284,15 +354,22 @@ help:
 	@echo "... install/strip"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
+	@echo "... Client"
 	@echo "... SQLiteCpp"
 	@echo "... Server"
 	@echo "... sqlite3"
 	@echo "... lib/src/database.o"
 	@echo "... lib/src/database.i"
 	@echo "... lib/src/database.s"
-	@echo "... lib/src/socket.o"
-	@echo "... lib/src/socket.i"
-	@echo "... lib/src/socket.s"
+	@echo "... lib/src/socket_client.o"
+	@echo "... lib/src/socket_client.i"
+	@echo "... lib/src/socket_client.s"
+	@echo "... lib/src/socket_server.o"
+	@echo "... lib/src/socket_server.i"
+	@echo "... lib/src/socket_server.s"
+	@echo "... src/client.o"
+	@echo "... src/client.i"
+	@echo "... src/client.s"
 	@echo "... src/server.o"
 	@echo "... src/server.i"
 	@echo "... src/server.s"

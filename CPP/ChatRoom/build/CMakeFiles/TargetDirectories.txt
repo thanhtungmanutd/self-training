@@ -1,3 +1,4 @@
+/home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles/Client.dir
 /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles/Server.dir
 /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles/edit_cache.dir
 /home/ubuntu/Desktop/workspace/my_training/self-training/CPP/ChatRoom/build/CMakeFiles/rebuild_cache.dir

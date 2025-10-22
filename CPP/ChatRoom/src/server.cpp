@@ -1,11 +1,6 @@
-#include <thread>
-#include "socket.h"
-#include <vector>
-#include <errno.h>
+#include "socket_server.h"
 
-#define DATABASE_PATH           "database.db"
-
-std::vector<std::thread> threadPool;
+#define DATABASE_PATH           "../database.db"
 
 int main(int argc, char* args[]) {
     if (argc != 2) {
@@ -14,23 +9,9 @@ int main(int argc, char* args[]) {
     }
 
     auto server = new Server(atoi(args[1]), SOCK_STREAM, DATABASE_PATH);
-    server->Init();
+    server->Init("127.0.0.1");
 
-    // while (1) {
-    //     sockaddr_in clientAddr; 
-    //     socklen_t len = sizeof(clientAddr);
+    server->HandleConnections();
 
-    //     int new_sockfd = server.Accept(clientAddr, len);
-
-    //     if (new_sockfd  > 0) {
-    //         std::thread client_thread(&Server::HandleConnection,
-    //                                   &server,
-    //                                   new_sockfd,
-    //                                   clientAddr);
-    //         threadPool.push_back(std::move(client_thread));
-    //     }
-    // }
-    // for (std::thread& Thread : threadPool) {
-    //     Thread.join();
-    // }
+    return 0;
 }

@@ -1,1 +1,1 @@
-/usr/bin/c++ CMakeFiles/Server.dir/lib/src/database.cpp.o CMakeFiles/Server.dir/lib/src/socket.cpp.o CMakeFiles/Server.dir/src/server.cpp.o -o Server  SQLiteCpp/libSQLiteCpp.a SQLiteCpp/sqlite3/libsqlite3.a -ldl 
+/usr/bin/c++ CMakeFiles/Server.dir/lib/src/database.cpp.o CMakeFiles/Server.dir/lib/src/socket_client.cpp.o CMakeFiles/Server.dir/lib/src/socket_server.cpp.o CMakeFiles/Server.dir/src/server.cpp.o -o Server  SQLiteCpp/libSQLiteCpp.a SQLiteCpp/sqlite3/libsqlite3.a -ldl 
