@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/Client.dir/lib/src/database.cpp.o CMakeFiles/Client.dir/lib/src/socket_client.cpp.o CMakeFiles/Client.dir/lib/src/socket_server.cpp.o CMakeFiles/Client.dir/src/client.cpp.o -o Client  SQLiteCpp/libSQLiteCpp.a SQLiteCpp/sqlite3/libsqlite3.a -ldl 
