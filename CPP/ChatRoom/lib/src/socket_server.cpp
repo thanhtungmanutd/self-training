@@ -23,11 +23,11 @@ int Server::MakeSocketNonBlocking(int& sockfd) {
     return fcntl(sockfd, F_SETFL, flags | O_NONBLOCK);
 }
 
-void Server::AddToEpoll(int& fd) {
+void Server::AddSocketToEpoll(int& fd) {
     this->ev.events = EPOLLIN | EPOLLET;
     this->ev.data.fd = fd;
     epoll_ctl(this->epoll_fd, EPOLL_CTL_ADD, fd, &ev);
-    this->con_list.insert({fd, REQUEST});
+    this->con_list.insert({fd, {"", REQUEST}});
 }
 
 void Server::DelFromEpoll(int& fd) {
@@ -35,14 +35,13 @@ void Server::DelFromEpoll(int& fd) {
     this->con_list.erase(fd);
 }
 
-void Server::NotifyToOnelineUser(int __sockfd, std::string msg) {
+void Server::NotifyToOnelineUser(int& __sockfd, const std::string& msg) {
     SQLite::Statement query(this->dtb.db, "SELECT sockfd FROM usrs WHERE status = 1;");
 
     while (query.executeStep()) {
         int sockfd = sockfd = query.getColumn(0).getInt(); ;
         if (sockfd != __sockfd) {
-            std::cout << sockfd << std::endl;
-            // send(sockfd, msg.c_str(), msg.size(), 0);
+            send(sockfd, msg.c_str(), msg.size(), 0);
         }
     }
 }
@@ -85,7 +84,7 @@ void Server::Init(const char *address) {
         exit(EXIT_FAILURE);
     }
 
-    std::cout << "Chat Server: Server Port Information: " << inet_ntoa(this->addr.sin_addr) << ":" << this->port << "\r\n";
+    std::cout << "Chat Server: server port information: " << inet_ntoa(this->addr.sin_addr) << ":" << this->port << "\r\n";
 }
 
 int Server::Accept(struct sockaddr_in& client_addr, socklen_t& len) {
@@ -99,98 +98,104 @@ int Server::Accept(struct sockaddr_in& client_addr, socklen_t& len) {
 }
 
 Response Server::CheckUserInfo(RequestMsg& msg, int& confd) {
-    std::string pass; int status,fd;
+    int status,fd;
     Response res;
+    std::string name = std::string(msg.name);
+    std::string pass = std::string(msg.pass);
+    std::string stored_pass;
 
-    switch (msg.option) {
-        case '1':
-            if (!this->dtb.QueryUserInfo(std::string(msg.name), pass, status, fd)) {
-                res = ERROR_USERNAME_NOT_FOUND;
-            } else {
-                if (pass.compare(std::string(msg.pass)) == 0) {
-                    if (status == 0) {
-                        this->dtb.UpdateUserStatus(std::string(msg.name), 1, std::move(sockfd));
-                        res = SUCCESS;
-                    } else if (status == 1) {
-                        res = ERROR_USER_LOGGED_IN;
-                    }
-                } else {
-                    res = ERROR_PASSWORD_NOT_MATCHING;
-                }
-            }
-            break;
-    
-        case '2':
-            if (!this->dtb.QueryUserInfo(std::string(msg.name), pass, status, fd)) {
-                if (this->dtb.AddNewUserToDatabase(std::string(msg.name), std::string(msg.pass), 1, confd)) 
+    if (!this->dtb.QueryUserInfo(name, stored_pass, status, fd)) {
+        if (msg.option == 1) res = ERROR_USERNAME_NOT_FOUND;
+        if (msg.option == 2) {
+            if (this->dtb.AddNewUserToDatabase(name, pass, 1, confd)) 
+                res = SUCCESS;
+            else 
+                res = ERROR_UNKOWN;
+        }
+    } else {
+        if (msg.option == 2) res = ERROR_DUPLICATE_USERNAME;
+        if (msg.option == 1) {
+            if (pass.compare(stored_pass) == 0) {
+                if (status == 0) {
+                    this->dtb.UpdateUserStatus(name, 1, std::move(confd));
                     res = SUCCESS;
-                else 
-                    res = ERROR_UNKOWN;
+                }
+                if (status == 1) res = ERROR_USER_LOGGED_IN;
+                
             } else {
-                res = ERROR_DUPLICATE_USERNAME; 
+                res = ERROR_PASSWORD_NOT_MATCHING;
             }
-            break;
-
-        default:
-            break;
-    }
+        }
+    }   
     return res;
 }
 
-void Server::HandleSingleCon(int fd) {
-    State state = this->con_list[fd];
-    RequestMsg reqmsg;
+void Server::HandleSingleSocketCon(int fd) {
+    State state = this->con_list[fd].second;
+    
     switch(state) {
         case REQUEST: {
+            RequestMsg reqmsg;
             struct sockaddr_in addr;
             socklen_t addr_len = sizeof(addr);
-            std::string msg = " ";
 
             int bytes = read(fd, &reqmsg, sizeof(reqmsg));
-            if (reqmsg.option == '2') 
-                msg.assign("Chat Server: Incoming registration request at ");
-            else if (reqmsg.option == '1')
-                msg.assign("Chat Server: Incoming Login request at ");
-            
-            getpeername(fd, (struct sockaddr*)&addr, &addr_len);
-            std::cout << msg << inet_ntoa(addr.sin_addr) << ":" << ntohs(addr.sin_port) << "\r\n";
-            Response res = CheckUserInfo(reqmsg, fd);
-            send(fd, &res, sizeof(res), 0);
-            if (res == SUCCESS) {
-                std::cout << "Chat Server: " <<  reqmsg.name << " joined the Chat Room at "  << inet_ntoa(addr.sin_addr) << ":" << ntohs(addr.sin_port) << "\r\n";
-                this->con_list[fd] = AUTHENTICATED;
+            if (bytes <= 0) {
+                DelFromEpoll(fd);
+            } else {
+                getpeername(fd, (struct sockaddr*)&addr, &addr_len);
+                std::cout << std::format("Chat Server: incoming {} request at {}:{}\r\n",
+                                         reqmsg.option == '2' ? "registration" : "login",
+                                         inet_ntoa(addr.sin_addr),
+                                         ntohs(addr.sin_port));
+                Response res = CheckUserInfo(reqmsg, fd);
+                this->con_list[fd].first = std::string(reqmsg.name);
+                send(fd, &res, sizeof(res), 0);
+                if (res == SUCCESS) {
+                    std::cout << "Chat Server: " <<  reqmsg.name << " joined the Chat Room at "  << inet_ntoa(addr.sin_addr) << ":" << ntohs(addr.sin_port) << "\r\n";
+                    this->con_list[fd].second = AUTHENTICATED;
+                }
             }
             break;
         }
 
         case AUTHENTICATED: {
             int option;
-            std::string msg = " ";
             int bytes = read(fd, &option, sizeof(option));
             
+            std::string name = this->con_list[fd].first;
+
             if ((bytes <= 0) || (option == 3)) {
-                std::cout << "Chat Server: " << reqmsg.name << " left the Chat Room\r\n";
-                msg = std::format("INFO: {} is offline\r\n", std::string(reqmsg.name)); 
-                NotifyToOnelineUser(fd, msg);
-                this->dtb.UpdateUserStatus(std::string(reqmsg.name), 0, -1);
+                std::cout << "Chat Server: " << name << " left the Chat Room\r\n";
+                NotifyToOnelineUser(fd, std::format("INFO: {} is offline\r\n", name));
+                this->dtb.UpdateUserStatus(name, 0, -1);
                 DelFromEpoll(fd);
             } else {
-                if (option == 1) 
-                    std::cout << "Chat Server: " << reqmsg.name << " selected Single user chat\r\n";
-                if (option == 2)
-                    std::cout << "Chat Server: " << reqmsg.name << " selected Multi user chat\r\n";
+                std::cout << std::format("Chat Server: {} selected {} user chat\r\n", name, option == 1 ? "single" : "multi");
                 Response res = SUCCESS;
                 send(fd, &res, sizeof(res), 0);
-                msg = std::format("INFO: {} is online\r\n", std::string(reqmsg.name)); 
-                // std::cout << msg <<std::endl;
-                // NotifyToOnelineUser(fd, msg);
-                this->con_list[fd] = ONLINE;
+                NotifyToOnelineUser(fd, std::format("INFO: {} is online\r\n", name));
+                this->con_list[fd].second = ONLINE;
             }
             break;
         }
 
-        case ONLINE:
+        case ONLINE: {
+            char recv_buff[1000];
+            std::string name = this->con_list[fd].first;
+
+            memset(recv_buff, 0, sizeof(recv_buff));
+            int bytes = read(fd, recv_buff, sizeof(recv_buff));
+            if (bytes <= 0) {
+                std::cout << "Chat Server: " << name << " left the Chat Room\r\n";
+                this->dtb.UpdateUserStatus(name, 0, -1);
+                NotifyToOnelineUser(fd, std::format("INFO: {} is offline\r\n", name));
+                DelFromEpoll(fd);
+            } else {
+                NotifyToOnelineUser(fd, std::format("{}: {}\r\n", name, std::string(recv_buff)));
+            }
             break;
+        }
 
         default:
             break;
@@ -218,11 +223,10 @@ void Server::HandleConnections() {
                     perror("accept failed");
                     continue;
                 }
-                // printf("Accepted new client: fd=%d\n", confd);
                 MakeSocketNonBlocking(confd);
-                AddToEpoll(confd);
+                AddSocketToEpoll(confd);
             } else {
-                HandleSingleCon(this->events[i].data.fd);
+                HandleSingleSocketCon(this->events[i].data.fd);
             }
         }
     }

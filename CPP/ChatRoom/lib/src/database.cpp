@@ -25,9 +25,7 @@ bool MyDatabase::UpdateUserStatus(const std::string& name, int&& status, int&& s
 }
 
 bool MyDatabase::AddNewUserToDatabase(const std::string& name, const std::string& pass, int&& status, int& sockfd) {
-    // sprintf(cmd, "INSERT INTO usrs (username, password, status, sockfd) VALUES ('%s', '%s', %d, %d);",
-    //         name.c_str(), pass.c_str(), status, sockfd);
-    SQLite::Statement query(this->db, std::format("UINSERT INTO usrs (username, password, status, sockfd) VALUES ({}, {}, {}, {});", name, pass, status, sockfd));
+    SQLite::Statement query(this->db, std::format("INSERT INTO usrs (username, password, status, sockfd) VALUES ('{}', '{}', {}, {});", name, pass, status, sockfd));
     try {
         query.exec();
     } catch(const SQLite::Exception& e) {

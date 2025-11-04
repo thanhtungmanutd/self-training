@@ -2,11 +2,16 @@
 #define _CLIENT_H_
 
 #include <iostream>
+#include <deque>
+#include <cstring>
+#include <format>
 #include <thread>
 #include <csignal>
 #include <unistd.h>
+#include <regex>
 #include <arpa/inet.h>
 #include <sys/socket.h>
+#include <ncurses.h>
 
 #pragma pack(push, 1)
 typedef struct {
@@ -31,19 +36,23 @@ class Client {
         int sockfd = -1;
         int connection_timeout = 5;
         struct sockaddr_in addr;
-        std::thread sendThread;
-        std::thread receiveThread;
+        std::deque<std::string> msg_queue;
+        std::thread SendThread;
+        std::thread ReceiveThread;
         State state;
 
     private:
         static void SignalHandler(int signum);
         Response SendRequest(RequestMsg& reqmsg);
-
+        void Recv();
+        void Send();
+        void DisplayMessages();
 
     public:
         Client(int&& __port, int&& __type) : port(__port), type(__type) {};
         void Init();
         bool Connect(const char *addr);
         void HandleConnection();
+        ~Client() {endwin();};
 };
 #endif /* _CLIENT_H_ */

@@ -1,5 +1,113 @@
 #include "socket_client.h"
 
+#define MAX_MSG_DISPLAY                 20
+
+void Client::SignalHandler(int signum) {
+    if ((signum == SIGINT) || (signum = SIGKILL)) {
+        endwin();
+        exit(EXIT_FAILURE);
+    }
+}
+
+Response Client::SendRequest(RequestMsg& req){
+    Response res = Response::SUCCESS;
+
+    if (send(sockfd, &req, sizeof(req), 0) < 0) 
+        goto end;
+    if (read(sockfd, &res, sizeof(res)) < 0) 
+        goto end;
+    return res;
+
+end:
+    endwin();
+    exit(EXIT_FAILURE);
+}
+
+void Client::Recv() {
+    constexpr int BUFFER_SIZE = 256;
+    char recv_buff[BUFFER_SIZE];
+
+    clear();
+    refresh();
+    
+    WINDOW *MsgWin = newwin(MAX_MSG_DISPLAY + 2, getmaxx(stdscr), 0, 0);
+    if (!MsgWin) 
+        goto end;
+
+    box(MsgWin, 0, 0);
+    wrefresh(MsgWin);
+    while (1) {
+        memset(recv_buff, 0, sizeof(recv_buff));
+        int bytes = read(sockfd, recv_buff, sizeof(recv_buff));
+        if (bytes <= 0) 
+            goto end;
+        if (msg_queue.size() == MAX_MSG_DISPLAY) 
+            msg_queue.pop_back();
+      
+        msg_queue.push_front(std::string(recv_buff, bytes - 1));
+
+        int row = 0;
+        for (const auto& msg : msg_queue) {
+            wmove(MsgWin, MAX_MSG_DISPLAY - row, 1);  
+            wclrtoeol(MsgWin);  
+            if (std::regex_search(msg, std::regex("INFO:"))) {
+                if (std::regex_search(msg, std::regex("online"))) {
+                    wattron(MsgWin, COLOR_PAIR(2));
+                    mvwprintw(MsgWin, MAX_MSG_DISPLAY - row, 1, "%s", msg.c_str());
+                    wattroff(MsgWin, COLOR_PAIR(2));
+                } else if (std::regex_search(msg, std::regex("offline"))) {
+                    wattron(MsgWin, COLOR_PAIR(1));
+                    mvwprintw(MsgWin, MAX_MSG_DISPLAY - row, 1, "%s", msg.c_str());
+                    wattroff(MsgWin, COLOR_PAIR(1));
+                }
+            } else {
+                mvwprintw(MsgWin, MAX_MSG_DISPLAY - row, 1, "%s", msg.c_str());
+            }
+            row++;
+        }        
+        wrefresh(MsgWin);
+    }
+
+end:
+    if (MsgWin) delwin(MsgWin);
+    endwin();
+    exit(EXIT_FAILURE);
+}
+
+void Client::Send() {
+    constexpr int MSG_SIZE = 256;
+    char input_message[MSG_SIZE];
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100)); // Ensure MsgWin is ready
+    WINDOW *InputWin = newwin(1, getmaxx(stdscr), 22, 1);
+    if (!InputWin) 
+        goto end;
+
+    mvwprintw(InputWin, 0, 0, "> ");
+    wrefresh(InputWin);
+    while (1) {
+        int bytes = wgetnstr(InputWin, input_message, MSG_SIZE - 1);
+        if (send(sockfd, input_message, strlen(input_message) + 1, 0) < 0) 
+            goto end;
+
+        if (msg_queue.size() == MAX_MSG_DISPLAY) 
+            msg_queue.pop_back();
+        msg_queue.push_front(std::string(input_message, bytes));
+        werase(InputWin);
+        mvwprintw(InputWin, 0, 0, "> ");
+        wrefresh(InputWin);
+    }
+
+end:
+    if (InputWin) delwin(InputWin);
+    endwin();
+    exit(EXIT_FAILURE);
+}
+
+void Client::DisplayMessages() {
+
+}
+
 void Client::Init() {
     this->sockfd = socket(AF_INET, this->type, 0);
     if (this->sockfd < 0) {
@@ -9,7 +117,7 @@ void Client::Init() {
     this->connection_timeout = 5;
 
     signal(SIGINT, SignalHandler);  // Handle Ctrl+C
-    signal(SIGTERM, SignalHandler); 
+    signal(SIGTERM, SignalHandler); // Handle termination signal
 }
 
 bool Client::Connect(const char *__addr) {
@@ -28,106 +136,108 @@ bool Client::Connect(const char *__addr) {
     return 0;
 }
 
-void Client::SignalHandler(int signum) {
-    if ((signum == SIGINT) || (signum = SIGKILL)) 
-        exit(EXIT_SUCCESS);
-}
-
-Response Client::SendRequest(RequestMsg& req){
-    Response res = Response::SUCCESS;
-
-    if (send(sockfd, &req, sizeof(req), 0) < 0) 
-        std::cout << "Client: failed to send request message\r\n";
-
-    if (read(sockfd, &res, sizeof(res)) < 0) 
-        std::cout << "Client: failed to read response message\r\n";
-    return res;
-}
-
 void Client::HandleConnection() {
-    int option;
-    std::string name;
     State state = SENREQUEST;
     bool SubThreadCreated = false;
+    Response res;
     
+    initscr();
+    cbreak();
+    echo();
+    curs_set(0);
+    start_color();
+
+    init_pair(1, COLOR_RED, COLOR_BLACK);   // pair 1: red text, black background
+    init_pair(2, COLOR_GREEN, COLOR_BLACK); // pair 2: green text, black background
+
+    printw("INFO: Connected to the Server\n\n");
+
     while (1) {
         switch (state) {
-            case SENREQUEST:
-                uint8_t opt;
-                Response res;
+            case SENREQUEST: {
                 RequestMsg reqmsg;
+                char InputOpt[100];
 
-                std::cout << "INFO: Connected to the Server\r\n\n";
-                std::cout << "1. Login\r\n2. Register\r\n3. Exit\r\n\n";
-                std::cout << "Enter your Option: " << std::flush;;
-                std::cin >> reqmsg.option;
+                printw("1. Login\n2. Register\n3. Exit\n\nEnter your Option: ");
+                refresh();
 
-                if (reqmsg.option == 3) 
-                    exit(EXIT_SUCCESS);
+                getstr(InputOpt);
+                reqmsg.option = std::stoi(InputOpt);
 
-                std::cout << "\r\nEnter User Name: ";
-                std::cin >> reqmsg.name;
-                std::cout << "\rEnter Password: ";
-                std::cin >> reqmsg.pass;
+                if (reqmsg.option == 3) goto end;
 
+                printw("\nEnter User Name: ");
+                getstr(reqmsg.name);
+                printw("Enter Password: ");
+                getstr(reqmsg.pass);
+                
                 res = SendRequest(reqmsg);
+                clear();
                 switch (res) {
                     case SUCCESS:
-                        if (reqmsg.option == '1')
-                            std::cout << "\nINFO: User Login Successful\r\n\n";
-                        if (reqmsg.option == '2')
-                            std::cout << "\nINFO: User Registration Successful\r\n\n";
+                        printw("INFO: User %s Successful\n\n", reqmsg.option == 1 ? "Login" : "Registration");
                         state = SELECTCHATOPT;
                         break;
 
                     case ERROR_DUPLICATE_USERNAME:
-                        std::cout << "\nINFO: User Registration Failed (Duplicate User Name)\r\n\n";
+                        printw("INFO: User Registration Failed (Duplicate User Name)\n\n");
                         break;
 
                     case ERROR_USERNAME_NOT_FOUND: 
-                        std::cout << "\nINFO: User Log In Failed (User Name Not Found)\r\n\n";
+                        printw("INFO: User Log In Failed (User Name Not Found)\n\n");
                         break;
 
                     case ERROR_PASSWORD_NOT_MATCHING:
-                        std::cout << "\nINFO: User Log In Failed (Password Not Matching)\r\n\n";
+                        printw("INFO: User Log In Failed (Password Not Matching)\n\n");
                         break;
 
                     case ERROR_USER_LOGGED_IN:
-                        std::cout << "\nINFO: User Log In Failed (User Already Logged In)\r\n\n";
+                        printw("INFO: User Log In Failed (User Already Logged In)\n\n");
                         break;
                     
                     case ERROR_UNKOWN:
-                        std::cout << "\nINFO: Unknown Error\r\n\n";
+                        printw("INFO: Unknown Error\n\n");
 
                     default:
                         break;
                 }
-                state = SELECTCHATOPT;
+                refresh();
                 break;
+            }
             
-            case SELECTCHATOPT:
-                std::cout << "Chat option:\n\r1: Single User Chat\r\n2: Multi User Chat\r\n3: Exit\r\n\n";
-                std::cout << "Select what you would like to proceed with: ";
-                std::cin >> option;
+            case SELECTCHATOPT: {
+                char InputOpt[100];
+                uint8_t option;
 
-                if (send(sockfd, &option, sizeof(option), 0) < 0) {
-                    std::cout << "Client: Server seems to crash close program\r\n";
-                    exit(EXIT_SUCCESS);
-                }
-                if (option == 3) 
-                    exit(EXIT_SUCCESS);
-                if (read(sockfd, &res, sizeof(res)) < 0) {
-                    std::cout << "Client: Server seems to crash close program\r\n";
-                    exit(EXIT_SUCCESS);
-                }
+                printw("Select Chat option:\n\n1: Single User Chat\n2: Multi User Chat\n3: Exit\n\nSelect what you would like to proceed with: ");
+                refresh();
+                getstr(InputOpt);
+                option = std::stoi(InputOpt);
+
+                if (send(sockfd, &option, sizeof(option), 0) < 0) goto end;
+                if (option == 3) goto end;
+                if (read(sockfd, &res, sizeof(res)) < 0) goto end;
                 state = ONLINE;
                 break;
+            }
 
-            case ONLINE:
+            case ONLINE: {
+                if (!SubThreadCreated) {
+                    this->ReceiveThread = std::thread(&Client::Recv, this);
+                    this->SendThread = std::thread(&Client::Send, this);
+                    SubThreadCreated = true;
+                }
                 break;
+            }
 
             default:
                 break;
         }
     }
+    this->SendThread.join();
+    this->ReceiveThread.join();
+
+end:
+    endwin();
+    exit(EXIT_FAILURE);    
 }

@@ -1,4 +1,5 @@
 #include "socket_client.h"
+#include "ncurses.h"
 
 int main(int argc, char* args[]) {
     if (argc != 2) {

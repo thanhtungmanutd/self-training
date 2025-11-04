@@ -17,6 +17,8 @@
 #define DEFAULT_ADDRESS             "0.0.0.0"
 #define MAX_EVENTS                  1000
 
+#define DEFAULT_REQMSG              {0, "", ""} 
+
 #pragma pack(push, 1)
 typedef struct {
     uint8_t option;
@@ -40,15 +42,15 @@ class Server {
         struct epoll_event ev, events[MAX_EVENTS];
         struct sockaddr_in addr;
         MyDatabase dtb;
-        std::unordered_map<int, State> con_list;
+        std::unordered_map<int, std::pair<std::string, State>> con_list;
 
     private:
         void Binding();
         void Listen();
         int MakeSocketNonBlocking(int& sockfd);
-        void AddToEpoll(int& fd);
+        void AddSocketToEpoll(int& fd);
         void DelFromEpoll(int& fd);
-        void NotifyToOnelineUser(int __sockfd, std::string msg);
+        void NotifyToOnelineUser(int& __sockfd, const std::string& msg);
         Response CheckUserInfo(RequestMsg& msg, int& fd);
 
     public:
@@ -56,7 +58,7 @@ class Server {
         void Init(const char *address = DEFAULT_ADDRESS);
         int Accept(sockaddr_in& client_addr, socklen_t& len);
         void HandleConnections();
-        void HandleSingleCon(int fd);
+        void HandleSingleSocketCon(int fd);
 };
 
 #endif /* _SERVER_H_ */
