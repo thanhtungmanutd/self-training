@@ -16,6 +16,7 @@ class MyDatabase {
         bool QueryUserInfo(const std::string& name, std::string& pass, int& status, int& sockfd);
         bool UpdateUserStatus(const std::string& name, int&& status, int&& sockfd);
         bool AddNewUserToDatabase(const std::string& name, const std::string& pass, int&& status, int& sockfd);
+        bool SetAllUsersOffline();
 };
 
 #endif /* _DATABASE_H_ */

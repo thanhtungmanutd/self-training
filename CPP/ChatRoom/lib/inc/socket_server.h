@@ -36,7 +36,6 @@ enum Response {SUCCESS,
 class Server {
     enum State {REQUEST, AUTHENTICATED, ONLINE};
     private:
-        bool alive = false;
         int port, type, sockfd, epoll_fd, nsockfds;
         struct epoll_event ev, events[MAX_EVENTS];
         struct sockaddr_in addr;
@@ -44,6 +43,7 @@ class Server {
         std::unordered_map<int, std::pair<std::string, State>> con_list;
 
     private:
+        static Server* static_server_ptr;
         static void SignalHandler(int signum);
         void Binding();
         void Listen();
@@ -54,11 +54,14 @@ class Server {
         Response CheckUserInfo(RequestMsg& msg, int& fd);
 
     public:
-        Server(int&& __port, int&& __type, std::string&& __path) : port(__port), type(__type), dtb(MyDatabase(std::move(__path))) {}
+        Server(int&& __port, int&& __type, std::string&& __path) : port(__port), type(__type), dtb(MyDatabase(std::move(__path))) { 
+            static_server_ptr = this; 
+        }
         void Init(const char *address = DEFAULT_ADDRESS);
         int Accept(sockaddr_in& client_addr, socklen_t& len);
         void HandleConnections();
         void HandleSingleSocketCon(int fd);
+        ~Server() { static_server_ptr = nullptr; }
 };
 
 #endif /* _SERVER_H_ */

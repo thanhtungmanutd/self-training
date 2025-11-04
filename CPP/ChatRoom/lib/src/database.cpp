@@ -33,3 +33,13 @@ bool MyDatabase::AddNewUserToDatabase(const std::string& name, const std::string
     }
     return true;
 }
+
+bool MyDatabase::SetAllUsersOffline() {
+    SQLite::Statement query(this->db, "UPDATE usrs SET status = 0, sockfd = -1 WHERE sockfd != -1;");
+    try {
+        query.exec();
+    } catch(const SQLite::Exception& e) {
+        return false;
+    }
+    return true;
+}

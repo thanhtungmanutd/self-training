@@ -1,8 +1,10 @@
 #include "socket_server.h"
 
+Server* Server::static_server_ptr = nullptr;
+
 void Server::SignalHandler(int signum) {
     if ((signum == SIGINT) || (signum = SIGKILL)) {
-        // dtb.UpdateUserStatus("", 0, -1);
+        static_server_ptr->dtb.SetAllUsersOffline();
         exit(EXIT_FAILURE);
     }
 }
@@ -214,10 +216,9 @@ void Server::HandleSingleSocketCon(int fd) {
 }
 
 void Server::HandleConnections() {
-    this->alive = true;
     struct epoll_event ev, events[MAX_EVENTS];
 
-    while (this->alive) {
+    while (1) {
         this->nsockfds = epoll_wait(this->epoll_fd, this->events, MAX_EVENTS, -1);
         if (this->nsockfds == -1) {
             perror("epoll_wait failed");
