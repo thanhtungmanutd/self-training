@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <csignal>
 #include <unordered_map>
 #include <format>
 #include <unistd.h>
@@ -16,8 +17,6 @@
 
 #define DEFAULT_ADDRESS             "0.0.0.0"
 #define MAX_EVENTS                  1000
-
-#define DEFAULT_REQMSG              {0, "", ""} 
 
 #pragma pack(push, 1)
 typedef struct {
@@ -45,6 +44,7 @@ class Server {
         std::unordered_map<int, std::pair<std::string, State>> con_list;
 
     private:
+        static void SignalHandler(int signum);
         void Binding();
         void Listen();
         int MakeSocketNonBlocking(int& sockfd);

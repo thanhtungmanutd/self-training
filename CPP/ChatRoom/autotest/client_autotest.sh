@@ -7,16 +7,16 @@ fi
 
 # build client
 echo "Compiling source"
-mkdir -p build
-cd build
+mkdir -p ../build
+cd ../build
 cmake .. 
 make clean && make Client
-cp Client ..
+cp Client ../autotest
 rm -rf Client
 
 # running client
 echo "Using port number: $PORT"
-cd ..
+cd ../autotest
 
 # log in and auto send msg periodically
 expect auto_login.exp "$PORT"

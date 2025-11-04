@@ -1,5 +1,12 @@
 #include "socket_server.h"
 
+void Server::SignalHandler(int signum) {
+    if ((signum == SIGINT) || (signum = SIGKILL)) {
+        // dtb.UpdateUserStatus("", 0, -1);
+        exit(EXIT_FAILURE);
+    }
+}
+
 void Server::Binding() {
     this->addr.sin_family = AF_INET;
     this->addr.sin_port = htons(this->port);
@@ -84,6 +91,9 @@ void Server::Init(const char *address) {
         exit(EXIT_FAILURE);
     }
 
+    signal(SIGINT, SignalHandler);  // Handle Ctrl+C
+    signal(SIGTERM, SignalHandler); // Handle termination signal
+    
     std::cout << "Chat Server: server port information: " << inet_ntoa(this->addr.sin_addr) << ":" << this->port << "\r\n";
 }
 
@@ -113,7 +123,8 @@ Response Server::CheckUserInfo(RequestMsg& msg, int& confd) {
                 res = ERROR_UNKOWN;
         }
     } else {
-        if (msg.option == 2) res = ERROR_DUPLICATE_USERNAME;
+        if (msg.option == 2) 
+            res = ERROR_DUPLICATE_USERNAME;
         if (msg.option == 1) {
             if (pass.compare(stored_pass) == 0) {
                 if (status == 0) {
@@ -122,9 +133,9 @@ Response Server::CheckUserInfo(RequestMsg& msg, int& confd) {
                 }
                 if (status == 1) res = ERROR_USER_LOGGED_IN;
                 
-            } else {
+            } else 
                 res = ERROR_PASSWORD_NOT_MATCHING;
-            }
+            
         }
     }   
     return res;

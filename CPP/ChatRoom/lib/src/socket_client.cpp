@@ -1,7 +1,5 @@
 #include "socket_client.h"
 
-#define MAX_MSG_DISPLAY                 20
-
 void Client::SignalHandler(int signum) {
     if ((signum == SIGINT) || (signum = SIGKILL)) {
         endwin();
@@ -27,85 +25,48 @@ void Client::Recv() {
     constexpr int BUFFER_SIZE = 256;
     char recv_buff[BUFFER_SIZE];
 
-    clear();
-    refresh();
-    
-    WINDOW *MsgWin = newwin(MAX_MSG_DISPLAY + 2, getmaxx(stdscr), 0, 0);
-    if (!MsgWin) 
-        goto end;
-
-    box(MsgWin, 0, 0);
-    wrefresh(MsgWin);
+    display->InitMsgWin();
     while (1) {
         memset(recv_buff, 0, sizeof(recv_buff));
         int bytes = read(sockfd, recv_buff, sizeof(recv_buff));
         if (bytes <= 0) 
             goto end;
+        
+        std::unique_lock<std::mutex> lock(msg_queue_mutex);
         if (msg_queue.size() == MAX_MSG_DISPLAY) 
             msg_queue.pop_back();
       
         msg_queue.push_front(std::string(recv_buff, bytes - 1));
-
-        int row = 0;
-        for (const auto& msg : msg_queue) {
-            wmove(MsgWin, MAX_MSG_DISPLAY - row, 1);  
-            wclrtoeol(MsgWin);  
-            if (std::regex_search(msg, std::regex("INFO:"))) {
-                if (std::regex_search(msg, std::regex("online"))) {
-                    wattron(MsgWin, COLOR_PAIR(2));
-                    mvwprintw(MsgWin, MAX_MSG_DISPLAY - row, 1, "%s", msg.c_str());
-                    wattroff(MsgWin, COLOR_PAIR(2));
-                } else if (std::regex_search(msg, std::regex("offline"))) {
-                    wattron(MsgWin, COLOR_PAIR(1));
-                    mvwprintw(MsgWin, MAX_MSG_DISPLAY - row, 1, "%s", msg.c_str());
-                    wattroff(MsgWin, COLOR_PAIR(1));
-                }
-            } else {
-                mvwprintw(MsgWin, MAX_MSG_DISPLAY - row, 1, "%s", msg.c_str());
-            }
-            row++;
-        }        
-        wrefresh(MsgWin);
+        lock.unlock();
+        display->ShowMessage(msg_queue);
     }
 
 end:
-    if (MsgWin) delwin(MsgWin);
-    endwin();
-    exit(EXIT_FAILURE);
+    display->closeWin();
 }
 
 void Client::Send() {
     constexpr int MSG_SIZE = 256;
     char input_message[MSG_SIZE];
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100)); // Ensure MsgWin is ready
-    WINDOW *InputWin = newwin(1, getmaxx(stdscr), 22, 1);
-    if (!InputWin) 
-        goto end;
-
-    mvwprintw(InputWin, 0, 0, "> ");
-    wrefresh(InputWin);
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    display->InitInputWin();
     while (1) {
-        int bytes = wgetnstr(InputWin, input_message, MSG_SIZE - 1);
+        int bytes = wgetnstr(display->InputWin, input_message, MSG_SIZE - 1);
         if (send(sockfd, input_message, strlen(input_message) + 1, 0) < 0) 
             goto end;
 
+        std::unique_lock<std::mutex> lock(msg_queue_mutex);
         if (msg_queue.size() == MAX_MSG_DISPLAY) 
             msg_queue.pop_back();
-        msg_queue.push_front(std::string(input_message, bytes));
-        werase(InputWin);
-        mvwprintw(InputWin, 0, 0, "> ");
-        wrefresh(InputWin);
+        msg_queue.push_front(std::format("You: {}", std::string(input_message)));
+        lock.unlock();
+        display->ShowMessage(msg_queue);
+        display->RefreshInputWin();
     }
 
 end:
-    if (InputWin) delwin(InputWin);
-    endwin();
-    exit(EXIT_FAILURE);
-}
-
-void Client::DisplayMessages() {
-
+    display->closeWin();
 }
 
 void Client::Init() {
@@ -140,15 +101,8 @@ void Client::HandleConnection() {
     State state = SENREQUEST;
     bool SubThreadCreated = false;
     Response res;
-    
-    initscr();
-    cbreak();
-    echo();
-    curs_set(0);
-    start_color();
-
-    init_pair(1, COLOR_RED, COLOR_BLACK);   // pair 1: red text, black background
-    init_pair(2, COLOR_GREEN, COLOR_BLACK); // pair 2: green text, black background
+    std::thread SendThread;
+    std::thread ReceiveThread;
 
     printw("INFO: Connected to the Server\n\n");
 
@@ -214,17 +168,18 @@ void Client::HandleConnection() {
                 getstr(InputOpt);
                 option = std::stoi(InputOpt);
 
-                if (send(sockfd, &option, sizeof(option), 0) < 0) goto end;
-                if (option == 3) goto end;
-                if (read(sockfd, &res, sizeof(res)) < 0) goto end;
+                if ((send(sockfd, &option, sizeof(option), 0) < 0) || (option > 3)) 
+                    goto end;
+                if (read(sockfd, &res, sizeof(res)) < 0) 
+                    goto end;
                 state = ONLINE;
                 break;
             }
 
             case ONLINE: {
                 if (!SubThreadCreated) {
-                    this->ReceiveThread = std::thread(&Client::Recv, this);
-                    this->SendThread = std::thread(&Client::Send, this);
+                    ReceiveThread = std::thread(&Client::Recv, this);
+                    SendThread = std::thread(&Client::Send, this);
                     SubThreadCreated = true;
                 }
                 break;
@@ -234,10 +189,43 @@ void Client::HandleConnection() {
                 break;
         }
     }
-    this->SendThread.join();
-    this->ReceiveThread.join();
+    SendThread.join();
+    ReceiveThread.join();
 
 end:
     endwin();
     exit(EXIT_FAILURE);    
+}
+
+Client::Display::Display() {
+    initscr();
+    cbreak();
+    echo();
+    curs_set(0);
+    start_color();
+    init_pair(1, COLOR_RED, COLOR_BLACK);   // pair 1: red text, black background
+    init_pair(2, COLOR_GREEN, COLOR_BLACK); // pair 2: green text, black background
+}
+
+void Client::Display::ShowMessage(std::deque<std::string>& msg_queue) {
+    int row = 0;
+    for (const auto& msg : msg_queue) {
+        wmove(MsgWin, MAX_MSG_DISPLAY - row, 1);  
+        wclrtoeol(MsgWin);  
+        if (std::regex_search(msg, std::regex("INFO:"))) {
+            if (std::regex_search(msg, std::regex("online"))) {
+                wattron(MsgWin, COLOR_PAIR(2));
+                mvwprintw(MsgWin, MAX_MSG_DISPLAY - row, 1, "%s", msg.c_str());
+                wattroff(MsgWin, COLOR_PAIR(2));
+            } else if (std::regex_search(msg, std::regex("offline"))) {
+                wattron(MsgWin, COLOR_PAIR(1));
+                mvwprintw(MsgWin, MAX_MSG_DISPLAY - row, 1, "%s", msg.c_str());
+                wattroff(MsgWin, COLOR_PAIR(1));
+            }
+        } else {
+            mvwprintw(MsgWin, MAX_MSG_DISPLAY - row, 1, "%s", msg.c_str());
+        }
+        row++;
+    }        
+    wrefresh(MsgWin);
 }
